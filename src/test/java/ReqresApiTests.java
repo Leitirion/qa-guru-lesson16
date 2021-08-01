@@ -7,9 +7,18 @@ import static org.hamcrest.Matchers.is;
 
 public class ReqresApiTests {
     @Test
-    void getListOfUsersTest() {
+    void getListOfUsersPerPageTest() {
         given()
-                .contentType(ContentType.JSON)
+                .when()
+                .get("https://reqres.in/api/users?page=2")
+                .then()
+                .statusCode(200)
+                .body("per_page", is(6));
+    }
+
+    @Test
+    void getSingleUserTotalTest() {
+        given()
                 .when()
                 .get("https://reqres.in/api/users?page=2")
                 .then()
@@ -18,27 +27,16 @@ public class ReqresApiTests {
     }
 
     @Test
-    void getSingleUserTest() {
-        given()
-                .contentType(ContentType.JSON)
-                .when()
-                .get("https://reqres.in/api/users/2")
-                .then()
-                .statusCode(200)
-                .body("data.id", is(2));
-    }
-
-    @Test
     void getSingleUserNotFoundTest() {
         given()
                 .when()
-                .get("https://reqres.in/api/users/23")
+                .get("https://reqres.in/api/users/456")
                 .then()
                 .statusCode(404);
     }
 
     @Test
-    void getListResourseTest() {
+    void getListResourceTest() {
         given()
                 .when()
                 .get("https://reqres.in/api/unknown")
@@ -48,14 +46,14 @@ public class ReqresApiTests {
     }
 
     @Test
-    void getSingleResourseTest() {
+    void getSingleResourceTest() {
         given()
                 .when()
-                .get("https://reqres.in/api/unknown/2")
+                .get("https://reqres.in/api/unknown/6")
                 .then()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("data.id", is(2));
+                .body("data.name", is("blue turquoise"));
 
     }
 
@@ -63,7 +61,7 @@ public class ReqresApiTests {
     void getSingleResourceNotFound() {
         given()
                 .when()
-                .get("https://reqres.in/api/unknown/23")
+                .get("https://reqres.in/api/unknown/456")
                 .then()
                 .statusCode(404);
     }
@@ -73,14 +71,14 @@ public class ReqresApiTests {
         given()
                 .contentType(ContentType.JSON)
                 .body("{\n" +
-                        "    \"name\": \"morpheuss\",\n" +
-                        "    \"job\": \"leader\"\n" +
+                        "    \"name\": \"Shelby\",\n" +
+                        "    \"job\": \"engineer\"\n" +
                         "}")
                 .when()
                 .post("https://reqres.in/api/users")
                 .then()
                 .statusCode(201)
-                .body("name", is("morpheuss"));
+                .body("name", is("Shelby"));
     }
 
     @Test
@@ -88,13 +86,13 @@ public class ReqresApiTests {
         given()
                 .contentType(ContentType.JSON)
                 .body("{\n" +
-                        "    \"name\": \"morpheuss\",\n" +
-                        "    \"job\": \"leader\"\n" +
+                        "    \"name\": \"Shelby\",\n" +
+                        "    \"job\": \"engineer\"\n" +
                         "}")
                 .when()
-                .put("https://reqres.in/api/users/2")
+                .put("https://reqres.in/api/users/4")
                 .then()
                 .statusCode(200)
-                .body("name", is("morpheuss"));
+                .body("name", is("Shelby"));
     }
 }
