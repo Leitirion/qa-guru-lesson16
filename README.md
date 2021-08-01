@@ -1,5 +1,6 @@
 # **Tests for guru.qa lesson #16**
-1. {TBD}
-2. {TBD}
-3. {TBD}
-4. {TBD}
+
+Api tests for ```https://reqres.in/```
+
+For launch tests use command:
+   ```./gradlew clean test```
